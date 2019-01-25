@@ -1,3 +1,5 @@
+## Adapted for testing SETL Pub/Sub
+
 ## Google Cloud Platform Python Samples
 
 [![Open in Cloud Shell][shell_img]][shell_link]

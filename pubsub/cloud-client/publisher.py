@@ -220,6 +220,89 @@ def publish_messages_with_batch_settings(project_id, topic_name):
     print('Published messages.')
     # [END pubsub_publisher_batch_settings]
 
+def publish_setl_message(project_id, topic_name):
+    """Publishes multiple messages to a Pub/Sub topic."""
+    # [START pubsub_quickstart_publisher]
+    # [START pubsub_publish]
+    from google.cloud import pubsub_v1
+
+    # TODO project_id = "Your Google Cloud Project ID"
+    # TODO topic_name = "Your Pub/Sub topic name"
+
+    publisher = pubsub_v1.PublisherClient()
+    # The `topic_path` method creates a fully qualified identifier
+    # in the form `projects/{project_id}/topics/{topic_name}`
+    topic_path = publisher.topic_path(project_id, topic_name)
+
+    # Sample UAT MPID (subject to change and/or switch to local test MPID)
+    data = '152ec5e9-e5ac-5942-8983-181d0aadcfbd'
+    # Data must be a bytestring
+    data = data.encode('utf-8')
+    # When you publish a message, the client returns a future.
+    future = publisher.publish(topic_path, data=data)
+    print('Published {} with message ID {}.'.format(data, future.result()))
+
+    print('Published test SETL message.')
+    # [END pubsub_quickstart_publisher]
+    # [END pubsub_publish]
+
+def publish_setl_messages(project_id, topic_name):
+    """Publishes multiple messages to a Pub/Sub topic."""
+    # [START pubsub_quickstart_publisher]
+    # [START pubsub_publish]
+    from google.cloud import pubsub_v1
+
+    # TODO project_id = "Your Google Cloud Project ID"
+    # TODO topic_name = "Your Pub/Sub topic name"
+
+    publisher = pubsub_v1.PublisherClient()
+    # The `topic_path` method creates a fully qualified identifier
+    # in the form `projects/{project_id}/topics/{topic_name}`
+    topic_path = publisher.topic_path(project_id, topic_name)
+
+    # Sample UAT MPIDs (subject to change and/or switch to local test MPIDs)
+    messages = [
+        '35e2efa1-fe3e-5b1a-b9a6-bbed302a0f33',
+        '374a3959-8539-5cf5-bd11-cd78bc13cb77',
+        '45c00456-96a7-50e5-85e6-d7bec4138315',
+        '557ab78d-169d-5190-8e82-59ecc07cb9d1'
+    ]
+
+    for message in messages:
+        # Data must be a bytestring
+        data = message.encode('utf-8')
+        # When you publish a message, the client returns a future.
+        future = publisher.publish(topic_path, data=data)
+        print('Published message: {} with message ID {}.'.format(data, future.result()))
+
+    print('Published test SETL messages.')
+    # [END pubsub_quickstart_publisher]
+    # [END pubsub_publish]
+
+def publish_custom_message(project_id, topic_name, message):
+    """Publishes multiple messages to a Pub/Sub topic."""
+    # [START pubsub_quickstart_publisher]
+    # [START pubsub_publish]
+    from google.cloud import pubsub_v1
+
+    # TODO project_id = "Your Google Cloud Project ID"
+    # TODO topic_name = "Your Pub/Sub topic name"
+
+    publisher = pubsub_v1.PublisherClient()
+    # The `topic_path` method creates a fully qualified identifier
+    # in the form `projects/{project_id}/topics/{topic_name}`
+    topic_path = publisher.topic_path(project_id, topic_name)
+
+    # Data must be a bytestring
+    data = message.encode('utf-8')
+    # When you publish a message, the client returns a future.
+    future = publisher.publish(topic_path, data=data)
+    print('Published message: {} with message ID {}.'.format(data, future.result()))
+
+    print('Published custom message.')
+    # [END pubsub_quickstart_publisher]
+    # [END pubsub_publish]
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
@@ -261,6 +344,22 @@ if __name__ == '__main__':
         help=publish_messages_with_batch_settings.__doc__)
     publish_with_batch_settings_parser.add_argument('topic_name')
 
+    publish_setl_message_parser = subparsers.add_parser(
+        'publish-setl-message',
+        help=publish_setl_message.__doc__)
+    publish_setl_message_parser.add_argument('topic_name')
+
+    publish_setl_messages_parser = subparsers.add_parser(
+        'publish-setl-messages',
+        help=publish_setl_messages.__doc__)
+    publish_setl_messages_parser.add_argument('topic_name')
+
+    publish_custom_message_parser = subparsers.add_parser(
+        'publish-custom-message',
+        help=publish_custom_message.__doc__)
+    publish_custom_message_parser.add_argument('topic_name')
+    publish_custom_message_parser.add_argument('message')
+
     args = parser.parse_args()
 
     if args.command == 'list':
@@ -280,3 +379,9 @@ if __name__ == '__main__':
         publish_messages_with_error_handler(args.project_id, args.topic_name)
     elif args.command == 'publish-with-batch-settings':
         publish_messages_with_batch_settings(args.project_id, args.topic_name)
+    elif args.command == 'publish-setl-message':
+        publish_setl_message(args.project_id, args.topic_name)
+    elif args.command == 'publish-setl-messages':
+        publish_setl_messages(args.project_id, args.topic_name)
+    elif args.command == 'publish-custom-message':
+        publish_custom_message(args.project_id, args.topic_name, args.message)

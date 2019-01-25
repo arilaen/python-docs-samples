@@ -119,6 +119,12 @@ To run this sample:
         publish-with-batch-settings
                             Publishes multiple messages to a Pub/Sub topic with
                             batch settings.
+        publish-setl-message
+                            Publishes a single test message for SETL application.
+        publish-setl-messages
+                            Publishes multiple test messages for SETL application.
+        publish-custom-message
+                            Publishes a custom message (taken as an extra argument).
 
     optional arguments:
       -h, --help            show this help message and exit
